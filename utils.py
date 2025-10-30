@@ -1,8 +1,8 @@
 """Utility functions for contact management bot application."""
+import pickle
 from typing import List, Tuple
 from decorators import input_error
 from address_book import AddressBook
-from record import Record
 from record import Record
 
 def parse_input(user_input: str) -> Tuple[str, List[str]]:
@@ -217,3 +217,30 @@ def remove_phone(args: List[str], book: AddressBook) -> str:
     
     record.remove_phone(phone)
     return f"Phone {phone} removed from {name}"
+
+
+def save_data(book: AddressBook, filename: str = "addressbook.pkl") -> None:
+    """Save the address book to a file using pickle serialization.
+    
+    Args:
+        book (AddressBook): Address book instance to save
+        filename (str): File name to save to (default: addressbook.pkl)
+    """
+    with open(filename, "wb") as f:
+        pickle.dump(book, f)
+
+
+def load_data(filename: str = "addressbook.pkl") -> AddressBook:
+    """Load the address book from a file using pickle deserialization.
+    
+    Args:
+        filename (str): File name to load from (default: addressbook.pkl)
+        
+    Returns:
+        AddressBook: Loaded address book or new empty address book if file not found
+    """
+    try:
+        with open(filename, "rb") as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        return AddressBook()  # Return new address book if file not found

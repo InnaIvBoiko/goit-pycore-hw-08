@@ -1,5 +1,6 @@
 from typing import List, Any, Tuple
 from address_book import AddressBook
+from utils import load_data, save_data
 from constants import DATE_FORMAT, UPCOMING_DAYS
 
 
@@ -15,13 +16,14 @@ def parse_input(user_input: str) -> Tuple[str, List[str]]:
     
     
 def main():
-    book = AddressBook()
+    book = load_data()
     print("Welcome to the assistant bot!")
     while True:
         user_input = input("Enter a command: ")
         command, args = parse_input(user_input)
 
         if command in ["close", "exit"]:
+            save_data(book)
             print("Good bye!")
             break
 
